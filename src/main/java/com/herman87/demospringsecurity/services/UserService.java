@@ -21,8 +21,11 @@ public class UserService {
 
     @Transactional
     public Long createUser(UserDTO userDTO) {
-        return Optional.ofNullable(user)
-                .map(user1 -> user1)
+        return Optional.ofNullable(userDTO)
+                .map(user1 -> User.builder()
+                        .username(userDTO.getUsername())
+                        .password(userDTO.getPassword())
+                        .build())
                 .map(userRepository::save)
                 .map(User::getId)
                 .orElseThrow();
@@ -30,6 +33,10 @@ public class UserService {
 
     @Transactional
     public void connect(UserDTO userDTO) {
+
+    }
+
+    public void activateUserById(Long id) {
 
     }
 }

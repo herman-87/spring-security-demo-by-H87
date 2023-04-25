@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -33,14 +34,20 @@ public class UserController {
     }
 
     @PostMapping("/user")
-    ResponseEntity<Long> createUser(@RequestBody User user) {
-        return ResponseEntity.status(CREATED).body(userService.createUser(user));
+    ResponseEntity<Long> createUser(@RequestBody UserDTO userDTO) {
+        return ResponseEntity.status(CREATED).body(userService.createUser(userDTO));
+    }
+
+    @PutMapping("/user/activate/{id}")
+    ResponseEntity<String> activateUserById(@RequestParam("id") Long id) {
+        userService.activateUserById(id);
+        return ResponseEntity.status(NO_CONTENT).body("user is activate");
     }
 
     @PutMapping("/login")
-    ResponseEntity<void> login(@RequestBody UserDTO userDTO) {
+    ResponseEntity<String> connectUser(@RequestBody UserDTO userDTO) {
         userService.connect(userDTO);
-        return ResponseEntity.status(NO_CONTENT).build();
+        return ResponseEntity.status(NO_CONTENT).body("success login");
     }
 
 }
